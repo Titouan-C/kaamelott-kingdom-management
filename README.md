@@ -4,9 +4,42 @@
 
 ### Prérequis
 - Java 19
+- PostgreSQL + Variable d'environnement `PATH` pointant vers le répertoire `bin` de PostgreSQL. Exemple :
+  - Sous Windows : `C:\Program Files\PostgreSQL\16\bin`
 
 ### Installation de l'application
-***TODO***
+
+1. Cloner le dépôt :
+```bash
+git clone https://github.com/Titouan-C/kaamelott-kingdom-management.git
+```
+
+2. Se placer dans le répertoire du projet :
+```bash
+cd kaamelott-kingdom-management
+```
+
+3. Créer la base de données PostgreSQL :
+```bash
+psql -U postgres -c "CREATE DATABASE kaamelott_kingdom_management;"
+```
+
+4. Initier la base de données PostgreSQL :
+```bash
+psql -U postgres -d kaamelott_kingdom_management -f src/main/resources/db/init_db.sql
+```
+
+5. Charger les modifications Gradle via l'IDE (l'éléphant de l'IDE quand vous ouvrez le projet) ou en ligne de commande :
+```bash
+./gradlew build
+```
+![img.png](src/main/resources/static/images/img.png)
+
+6. Lancer l'application via l'IDE ou en ligne de commande :
+```bash
+./gradlew bootRun
+```
+![img_1.png](src/main/resources/static/images/img_1.png)
 
 
 ## Choix techniques du projet
@@ -16,6 +49,8 @@
 - PostgreSQL est un SGBD open-source robuste, très utilisé en entreprise, avec un excellent support des types de
 données, des contraintes d'intégrité, et des transactions.
 - Il offre de bonnes perfomances et une grande compatibilité avec Spring Data JPA / Hibernate.
+- Utilisation des UUID pour les identifiants, ce qui permet une meilleure scalabilité et évite les problèmes de
+séquences dans les bases de données distribuées.
 **Alternative** : MySQL ou MariaDB, mais PostgreSQL est préféré pour ses fonctionnalités avancées
 
 ### 2. Lombok
@@ -57,7 +92,8 @@ si le projet grandit).
 ### 8. Enums
 **Pourquoi ce choix ?**
 - Utilisation d'énumérations Java quand le nombre de valeurs est faible et stable (meilleur performance, simplicité).
-- Possibilité d'utiliser des tables en base si besoin de rendre dynamique.
+- Possibilité d'utiliser des tables en base si besoin de rendre dynamique (nottament pour les titres des chevaliers,
+qui peuvent être modifiés dans le temps).
 **Alternative** : Utiliser des constantes, mais cela rendrait le code moins lisible et plus sujet aux erreurs.
 
 ### 9. Suppression soft
