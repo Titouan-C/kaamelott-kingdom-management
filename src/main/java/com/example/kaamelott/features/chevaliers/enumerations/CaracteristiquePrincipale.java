@@ -8,7 +8,7 @@ public enum CaracteristiquePrincipale {
     GOURMAND("Gourmand"),
     LACHE("Lâche"),
     NAIF("Naïf"),
-    PINOUF("Pinouf"),
+    PINOUF("Pinouf");
 
     private final String label;
 
