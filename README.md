@@ -114,3 +114,434 @@ nombre d'entités augmente dans le futur.
 - C'est un outil de build moderne et performant.
 - Sa syntaxe est plus lisible que celle de Maven, et il permet une meilleure gestion des dépendances.
 **Alternative** : Maven (solution historique et stable), mais Gradle est préféré pour sa flexibilité et sa rapidité.
+
+## Contrats d'interface
+
+### 0. Réponse générique
+
+```json
+{
+  "ok": "booléen indiquant si la requête a réussi",
+  "data": {
+    // Données spécifiques à la requête
+  },
+  "message": "Message d'information ou d'erreur"
+}
+```
+
+### 1. GET /chevaliers
+
+Récupère la liste des chevaliers avec pagination.
+
+#### Requête
+```http
+GET /chevaliers?page=0&limit=10
+```
+
+#### Réponse
+
+Pour toutes les requêtes, la réponse est structurée de la manière suivante :
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID",
+        "nom": "Nom du chevalier",
+        "titre": "Titre du chevalier",
+        "caracteristique_principale": "GOURMAND",
+        "niveau_bravoure": 1
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Chevaliers récupérés avec succès"
+}
+```
+
+#### 2. POST /chevaliers
+
+Crée un nouveau chevalier.
+
+#### Requête
+```http
+POST /chevaliers
+```
+
+#### Corps de la requête
+```json
+{
+  "nom": "Nom du chevalier",
+  "id_titre": "UUID du titre",
+  "caracteristique_principale": "GOURMAND",
+  "niveau_bravoure": 5
+}
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "id": "UUID",
+    "nom": "Nom du chevalier",
+    "titre": "Titre du chevalier",
+    "caracteristique_principale": "GOURMAND",
+    "niveau_bravoure": 1
+  },
+  "message": "Chevalier créé avec succès"
+}
+```
+
+#### 3. GET /quetes/{id}/participants
+
+Récupère la liste des participants à une quête avec leur rôle et leur statut dans la quête, avec pagination.
+
+#### Requête
+```http
+GET /quetes/{id}/participants?page=0&limit=10
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID du chevalier",
+        "nom": "Nom du chevalier",
+        "role": "Chef de quête",
+        "statut": "En cours"
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Participants récupérés avec succès"
+}
+```
+
+#### 4. POST /quetes/{idQuete}/assigner-chevalier
+
+Assigne un chevalier à une quête.
+
+#### Requête
+```http
+POST /quetes/{idQuete}/assigner-chevalier
+```
+
+#### Corps de la requête
+```json
+{
+  "id_chevalier": "UUID du chevalier",
+  "role": "Chef de quête",
+  "statut": "En cours"
+}
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": null,
+  "message": "Chevalier assigné à la quête avec succès"
+}
+```
+
+#### 5. GET /chevaliers/{idChevalier}/quetes-en-cours
+
+Récupère la liste des quêtes en cours pour un chevalier avec pagination.
+
+#### Requête
+```http
+GET /chevaliers/{idChevalier}/quetes-en-cours?page=0&limit=10
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID de la quête",
+        "nom": "Nom de la quête",
+        "statut": "En cours"
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Quêtes en cours récupérées avec succès"
+}
+```
+
+#### 6. GET /quetes/difficulte-aberrante
+
+Récupère la liste des quêtes non commencées avec une difficulté aberrante avec pagination.
+
+#### Requête
+```http
+GET /quetes/difficulte-aberrante?page=0&limit=10
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID de la quête",
+        "nom": "Nom de la quête",
+        "description": "Description de la quête",
+        "difficulte": "Aberante",
+        "date_assignation": "2023-10-01T12:00:00Z",
+        "date_echeance": "2023-10-15T12:00:00Z"
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Quêtes avec difficulté aberrante récupérées avec succès"
+}
+```
+
+#### 7. GET /chevaliers/{idChevalier}/retirer-quete/{idQuete}
+
+Retire un chevalier d'une quête.
+
+#### Requête
+```http
+GET /chevaliers/{idChevalier}/retirer-quete/{idQuete}
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": null,
+  "message": "Chevalier retiré de la quête avec succès"
+}
+```
+#### 8. GET /chevaliers/caracteristique/{caracteristique}
+
+Recherche les chevaliers par caractéristique principale avec pagination.
+
+#### Requête
+```http
+GET /chevaliers/caracteristique/{caracteristique}?page=0&limit=10
+```
+
+#### Réponse
+
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID du chevalier",
+        "nom": "Nom du chevalier",
+        "titre": "Titre du chevalier",
+        "caracteristique_principale": "GOURMAND",
+        "niveau_bravoure": 1
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Chevaliers par caractéristique récupérés avec succès"
+}
+```
+
+#### 9. GET /quetes/effectif-manquant?minChevaliers={min}
+
+Retourne les quêtes qui ont un nombre de chevaliers assignés inférieur à un minimum donné avec pagination.
+
+#### Requête
+```http
+GET /quetes/effectif-manquant?minChevaliers=3&page=0&limit=10
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID de la quête",
+        "nom": "Nom de la quête",
+        "description": "Description de la quête",
+        "difficulte": "Normale",
+        "date_assignation": "2023-10-01T12:00:00Z",
+        "date_echeance": "2023-10-15T12:00:00Z",
+        "effectif_actuel": 2
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Quêtes avec effectif manquant récupérées avec succès"
+}
+```
+
+#### 10. GET /quetes/les-plus-longues?limit={nombre}
+
+Retourne les quêtes les plus longues (en jours) avec pagination. Les quêtes sont triées par durée décroissante.
+
+#### Requête
+```http
+GET /quetes/les-plus-longues?page=0&limit=10
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID de la quête",
+        "nom": "Nom de la quête",
+        "description": "Description de la quête",
+        "difficulte": "Difficile",
+        "date_assignation": "2023-09-01T12:00:00Z",
+        "date_echeance": "2023-10-01T12:00:00Z"
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Quêtes les plus longues récupérées avec succès"
+}
+```
+
+#### 11. GET /quetes/periode?date_debut={date1}&date_fin={date2}
+
+Retourne les quêtes qui ont été assignées dans une période donnée avec pagination.
+
+#### Requête
+```http
+GET /quetes/periode?date_debut=2023-10-01&date_fin=2023-10-31&page=0&limit=10
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "content": [
+      {
+        "id": "UUID de la quête",
+        "nom": "Nom de la quête",
+        "nb_chevaliers": 5,
+        "statut": "En cours",
+        "difficulte": "Normale",
+        "duree_totale": "10 jours 15 heures"
+      }
+    ],
+    "nextCursor": null
+  },
+  "message": "Quêtes dans la période récupérées avec succès"
+}
+```
+
+#### 12. GET /chevaliers/rapport-performance/{idChevalier}
+
+Retourne un rapport de performance d'un chevalier, incluant le nombre de quêtes terminées, le nombre de quêtes en étant
+chef d'expédition et le taux de succès (terminée / en_cours + terminée).
+
+#### Requête
+```http
+GET /chevaliers/rapport-performance/{idChevalier}
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "id_chevalier": "UUID du chevalier",
+    "nom_chevalier": "Nom du chevalier",
+    "nb_quetes_terminees": 10,
+    "nb_quetes_en_cours": 5,
+    "nb_quetes_total": 15,
+    "taux_succes": 66.67,
+    "commentaire_du_roi": "Excellent travail, continuez ainsi !"
+  },
+  "message": "Rapport de performance récupéré avec succès"
+}
+```
+
+#### 13. GET /stats/rapport-activite-mensuel?mois={mois}&annee={annee}
+
+Retourne un rapport d'activité mensuel, incluant le nombre total de nouvelles quêtes, le nombre totale de quêtes
+terminées, le nombre de chevaliers ayant participé à au moins une quête, et la quête la plus lamentablement échouée.
+
+#### Requête
+```http
+GET /stats/rapport-activite-mensuel?mois=10&annee=2023
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "mois": "Octobre 2023",
+    "nb_nouvelles_quetes": 20,
+    "nb_quetes_terminees": 15,
+    "nb_chevaliers_participants": 10,
+    "quete_plus_lamentablement_echouee": {
+      "id": "UUID de la quête",
+      "nom": "Nom de la quête",
+      "description": "Description de la quête",
+      "difficulte": "Difficile",
+      "date_assignation": "2023-10-01T12:00:00Z",
+      "date_echeance": "2023-10-15T12:00:00Z"
+    }
+  },
+  "message": "Rapport d'activité mensuel récupéré avec succès"
+}
+```
+
+#### 14. DELETE /chevaliers/{id}
+
+Supprime un chevalier (soft delete).
+
+#### Requête
+```http
+DELETE /chevaliers/{id}
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": null,
+  "message": "Chevalier supprimé avec succès"
+}
+```
+
+### 15. GET /chevaliers/titres
+
+Récupère la liste des titres de chevaliers.
+
+#### Requête
+```http
+GET /chevaliers/titres
+```
+
+#### Réponse
+```json
+{
+  "ok": true,
+  "data": {
+    "titres": [
+      {
+        "id": "UUID du titre",
+        "nom": "Nom du titre"
+      }
+    ]
+  },
+  "message": "Titres récupérés avec succès"
+}
+```
