@@ -24,8 +24,8 @@ public class ChevalierEntity {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "nom", nullable = false)
+    private String nom;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_titre", nullable = false)

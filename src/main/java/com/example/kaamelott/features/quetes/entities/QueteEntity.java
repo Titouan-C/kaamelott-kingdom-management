@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -21,8 +22,8 @@ public class QueteEntity {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "titre", nullable = false)
-    private String titre;
+    @Column(name = "nom_quete", nullable = false)
+    private String nom_quete;
 
     @Column(name = "description")
     private String description;
@@ -38,6 +39,6 @@ public class QueteEntity {
     private LocalDate dateEcheance;
 
     @Column(name = "deleted_at")
-    private LocalDate deletedAt;
+    private LocalDateTime deletedAt;
 
 }
