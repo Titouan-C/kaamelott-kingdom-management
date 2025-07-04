@@ -296,8 +296,8 @@ GET /quetes/difficulte-aberrante?page=0&limit=10
         "nom": "Nom de la quête",
         "description": "Description de la quête",
         "difficulte": "Aberante",
-        "date_assignation": "2023-10-01T12:00:00Z",
-        "date_echeance": "2023-10-15T12:00:00Z"
+        "date_assignation": "2023-10-01",
+        "date_echeance": "2023-10-15"
       }
     ],
     "nextCursor": null
@@ -373,8 +373,8 @@ GET /quetes/effectif-manquant?minChevaliers=3&page=0&limit=10
         "nom": "Nom de la quête",
         "description": "Description de la quête",
         "difficulte": "Normale",
-        "date_assignation": "2023-10-01T12:00:00Z",
-        "date_echeance": "2023-10-15T12:00:00Z",
+        "date_assignation": "2023-10-01",
+        "date_echeance": "2023-10-15",
         "effectif_actuel": 2
       }
     ],
@@ -404,8 +404,8 @@ GET /quetes/les-plus-longues?page=0&limit=10
         "nom": "Nom de la quête",
         "description": "Description de la quête",
         "difficulte": "Difficile",
-        "date_assignation": "2023-09-01T12:00:00Z",
-        "date_echeance": "2023-10-01T12:00:00Z"
+        "date_assignation": "2023-09-01",
+        "date_echeance": "2023-10-01"
       }
     ],
     "nextCursor": null
@@ -435,7 +435,7 @@ GET /quetes/periode?date_debut=2023-10-01&date_fin=2023-10-31&page=0&limit=10
         "nb_chevaliers": 5,
         "statut": "En cours",
         "difficulte": "Normale",
-        "duree_totale": "10 jours 15 heures"
+        "duree_totale": "10 jours"
       }
     ],
     "nextCursor": null
@@ -495,8 +495,8 @@ GET /stats/rapport-activite-mensuel?mois=10&annee=2023
       "nom": "Nom de la quête",
       "description": "Description de la quête",
       "difficulte": "Difficile",
-      "date_assignation": "2023-10-01T12:00:00Z",
-      "date_echeance": "2023-10-15T12:00:00Z"
+      "date_assignation": "2023-10-01",
+      "date_echeance": "2023-10-15"
     }
   },
   "message": "Rapport d'activité mensuel récupéré avec succès"
