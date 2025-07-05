@@ -10,6 +10,7 @@ import com.example.kaamelott.features.chevaliers.entities.ChevalierTitreEntity;
 import com.example.kaamelott.features.chevaliers.enumerations.CaracteristiquePrincipale;
 import com.example.kaamelott.features.chevaliers.repositories.ChevalierRepository;
 import com.example.kaamelott.features.chevaliers.repositories.ChevalierTitreRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class ChevalierService implements IChevalierService {
     }
 
     @Override
+    @Transactional
     public OutChevalierDto createChevalier(InChevalierDto inChevalierDto) {
         ChevalierEntity chevalierEntity = toEntity(inChevalierDto);
         // New variable to get the ID after saving

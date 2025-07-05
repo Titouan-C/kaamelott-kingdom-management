@@ -21,7 +21,7 @@ cd kaamelott-kingdom-management
 
 3. Créer la base de données PostgreSQL :
 ```bash
-psql -U postgres -c "CREATE DATABASE kaamelott_kingdom_management;"
+psql -U postgres -c "CREATE DATABASE kaamelott_kingdom_management WITH OWNER postgres ENCODING 'UTF8' TEMPLATE template0;"
 ```
 
 4. Initier la base de données PostgreSQL :
@@ -118,6 +118,15 @@ nombre d'entités augmente dans le futur.
 - C'est un outil de build moderne et performant.
 - Sa syntaxe est plus lisible que celle de Maven, et il permet une meilleure gestion des dépendances.
 **Alternative** : Maven (solution historique et stable), mais Gradle est préféré pour sa flexibilité et sa rapidité.
+
+### 12. Récupération des données
+**Pourquoi ce choix ?**
+- Utilisation de `@Query` pour les requêtes complexes pour améliorer les performances et la lisibilité du code =>
+  permet de directement récupérer les données nécessaires à l'application sans avoir à modifier le modèle de données.
+- Utilisation de `@Transactional` pour les méthodes qui modifient la base de données pour garantir l'intégrité des
+données et éviter les problèmes de concurrence.
+**Alternative** : Utilisation de méthodes de repository standards, mais cela rendrait le code moins performant et plus
+complexe.
 
 ## Contrats d'interface
 

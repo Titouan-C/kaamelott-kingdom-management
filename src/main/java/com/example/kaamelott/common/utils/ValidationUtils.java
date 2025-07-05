@@ -10,6 +10,28 @@ import java.util.UUID;
 public class ValidationUtils {
 
   /**
+   * Validates and parses a string to a UUID.
+   *
+   * @param id String to be validated and parsed
+   * @param fieldName Name of the field that was provided
+   * @return UUID if validation is successful
+   */
+  public static UUID validateAndParseUUID(String id, String fieldName) {
+    validateNotNullAndNotEmpty(id, fieldName);
+
+    try {
+      return UUID.fromString(id);
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException(
+        String.format(
+          "La valeur du champ '%s' est invalide",
+          fieldName
+        )
+      );
+    }
+  }
+
+  /**
    * Validates and parses a string to an integer.
    *
    * @param stringNumber String to be validated and parsed

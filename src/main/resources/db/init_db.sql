@@ -6,6 +6,9 @@ DROP TABLE IF EXISTS chevaliers CASCADE;
 DROP TABLE IF EXISTS chevalier_titres CASCADE;
 
 
+
+SET client_encoding = 'UTF8';
+
 -- Création des tables
 
 CREATE TABLE chevalier_titres (
@@ -63,6 +66,6 @@ INSERT INTO quetes (id, nom_quete, description, difficulte, date_assignation, da
 ('795a1eef-5e5d-4d6c-adc0-89d3785af3a9', 'Comprendre un truc', 'Aider Perceval à comprendre un truc compliqué.', 'DIFFICILE', '2025-03-01', '2025-10-31');
 
 INSERT INTO participation_quetes (id_chevalier, id_quete, role, statut_participation, commentaire_roi) VALUES
-('a7ada09d-fd3d-47e9-a413-6885e19f2bd1', '732e94c2-9e57-4fa1-96ec-3eb845dd8cdd', 'Chef de quête', 'EN_COURS', 'Bonne chance, Léodogan !'),
-('f835ae74-0e0f-4a52-916a-bf817026b0c5', '8af9f6a1-481d-4477-ab15-18d15a5f1c37', 'Pêcheur', 'TERMINEE', 'Perceval, tu dois pêcher du poisson frais !'),
-('9b894c16-3a08-4f9b-87d1-16af482042ec', '795a1eef-5e5d-4d6c-adc0-89d3785af3a9', 'Conseiller', 'ECHOUEE_LAMENTABLEMENT', 'Karadoc, tu as été d’une grande aide.');
+('a7ada09d-fd3d-47e9-a413-6885e19f2bd1', '732e94c2-9e57-4fa1-96ec-3eb845dd8cdd', 'CHEF_EXPEDITION', 'EN_COURS', 'Bonne chance, Léodogan !'),
+('f835ae74-0e0f-4a52-916a-bf817026b0c5', '8af9f6a1-481d-4477-ab15-18d15a5f1c37', 'ACOLYTE', 'TERMINEE', 'Perceval, tu dois pêcher du poisson frais !'),
+('9b894c16-3a08-4f9b-87d1-16af482042ec', '795a1eef-5e5d-4d6c-adc0-89d3785af3a9', 'RESERVE', 'ECHOUEE_LAMENTABLEMENT', 'Karadoc, tu as été d’une grande aide.');
