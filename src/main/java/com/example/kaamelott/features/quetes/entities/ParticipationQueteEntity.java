@@ -41,4 +41,10 @@ public class ParticipationQueteEntity {
     @Column(name = "commentaire_roi")
     private String commentaireRoi;
 
+    public ParticipationQueteEntity(QueteEntity quete, ChevalierEntity chevalier, ParticipationQueteRole role, StatutParticipationQuete statutParticipation) {
+        this.quete = quete;
+        this.chevalier = chevalier;
+        this.role = role;
+        this.statutParticipation = statutParticipation;
+    }
 }

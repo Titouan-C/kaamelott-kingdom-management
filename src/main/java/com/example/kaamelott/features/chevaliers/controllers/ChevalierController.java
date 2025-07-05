@@ -7,6 +7,7 @@ import com.example.kaamelott.common.utils.PaginationUtils;
 import com.example.kaamelott.common.utils.ValidationUtils;
 import com.example.kaamelott.features.chevaliers.dtos.in.InChevalierDto;
 import com.example.kaamelott.features.chevaliers.dtos.out.OutChevalierDto;
+import com.example.kaamelott.features.chevaliers.dtos.out.OutChevalierQueteDto;
 import com.example.kaamelott.features.chevaliers.services.IChevalierService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Controller for managing Chevaliers in the Kaamelott application.
@@ -53,6 +55,12 @@ public class ChevalierController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Creates a new Chevalier.
+     *
+     * @param inChevalierDto the DTO containing the details of the Chevalier to be created
+     * @return a ResponseEntity containing the created Chevalier DTO
+     */
     @PostMapping("")
     public ResponseEntity<OutResponseDto<OutChevalierDto>> addChevalier(
             @Valid  @RequestBody InChevalierDto inChevalierDto
@@ -74,6 +82,33 @@ public class ChevalierController {
                 "Chevalier créé avec succès"
         );
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    /**
+     * Retrieves the list of ongoing quests for a specific Chevalier.
+     *
+     * @param idChevalier the ID of the Chevalier whose ongoing quests are to be retrieved
+     * @param cursor the current page index, defaults to 0 if not provided
+     * @param pageSize the number of items per page, defaults to 10 if not provided
+     * @return a ResponseEntity containing the paginated list of ongoing quests for the Chevalier
+     */
+    @GetMapping("{idChevalier}/quetes-en-cours")
+    public ResponseEntity<OutResponseDto<OutPaginatedDataDto<List<OutChevalierQueteDto>>>> getQuetesEnCours(
+            @PathVariable String idChevalier,
+            @RequestParam(name = PaginationUtils.PAGE, defaultValue = PaginationUtils.DEFAULT_CURSOR) String cursor,
+            @RequestParam(name = PaginationUtils.LIMIT, defaultValue = PaginationUtils.DEFAULT_PAGE_SIZE) String pageSize
+    ) {
+        UUID chevalierId = ValidationUtils.validateAndParseUUID(idChevalier, "idChevalier");
+        Integer cursorValue = ValidationUtils.validateAndParseInt(cursor, PaginationUtils.PAGE);
+        Integer pageSizeValue = ValidationUtils.validateAndParseInt(pageSize, PaginationUtils.LIMIT);
+
+        OutPaginatedDataDto<List<OutChevalierQueteDto>> quetesEnCours = chevalierService.getQuetesEnCours(chevalierId, cursorValue, pageSizeValue);
+        OutResponseDto<OutPaginatedDataDto<List<OutChevalierQueteDto>>> response = new OutResponseDto<>(
+                quetesEnCours,
+                true,
+                "Quêtes en cours récupérées avec succès"
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -40,5 +41,13 @@ public class QueteEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "participation_quetes",
+        joinColumns = @JoinColumn(name = "id_quete"),
+        inverseJoinColumns = @JoinColumn(name = "id_chevalier")
+    )
+    private Set<ParticipationQueteEntity> participationQueteEntities;
 
 }

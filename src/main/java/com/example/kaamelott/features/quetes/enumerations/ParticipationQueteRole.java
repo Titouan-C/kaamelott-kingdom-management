@@ -20,7 +20,11 @@ public enum ParticipationQueteRole {
                 return role;
             }
         }
-        throw new IllegalArgumentException("No ParticipationQueteRole found for label: " + label);
+        throw new IllegalArgumentException(String.format(
+                "Le rôle de participation '%s' n'est pas valide. Valeurs possibles : %s",
+                label,
+                String.join(", ", java.util.Arrays.stream(values()).map(ParticipationQueteRole::getLabel).toArray(String[]::new))
+        ));
     }
 
 }

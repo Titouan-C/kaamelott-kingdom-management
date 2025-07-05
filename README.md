@@ -278,9 +278,9 @@ GET /chevaliers/{idChevalier}/quetes-en-cours?page=0&limit=10
   "data": {
     "content": [
       {
-        "id": "UUID de la quête",
-        "nom": "Nom de la quête",
-        "statut": "En cours"
+        "quete_id": "UUID de la quête",
+        "quete_nom": "Nom de la quête",
+        "participation_statut": "En cours"
       }
     ],
     "nextCursor": null
@@ -292,6 +292,13 @@ GET /chevaliers/{idChevalier}/quetes-en-cours?page=0&limit=10
 #### 6. GET /quetes/difficulte-aberrante
 
 Récupère la liste des quêtes non commencées avec une difficulté aberrante avec pagination.
+
+#### Choix technique :
+- Ajout d'un statut de participation `"Non commencée"` pour les quêtes qui n'ont pas encore été commencées par les
+chevaliers.
+- Ajout d'une méthode `getFinishedStatues()` dans l'énumération `StatutParticipation` pour récupérer les statuts
+qui sont considérés comme terminés (par exemple, `"Terminée"`, `"Abandonnée par flemme"`, etc) => ça permet de
+filtrer la requête SQL pour ne pas récupérer les quêtes qui ont déjà été commencées.
 
 #### Requête
 ```http
@@ -308,7 +315,7 @@ GET /quetes/difficulte-aberrante?page=0&limit=10
         "id": "UUID de la quête",
         "nom": "Nom de la quête",
         "description": "Description de la quête",
-        "difficulte": "Aberante",
+        "difficulte": "Aberrante",
         "date_assignation": "2023-10-01",
         "date_echeance": "2023-10-15"
       }

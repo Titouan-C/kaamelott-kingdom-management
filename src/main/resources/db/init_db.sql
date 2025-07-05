@@ -61,11 +61,12 @@ INSERT INTO chevaliers (id, nom, id_titre, caracteristique_principale, niveau_br
 ('9b894c16-3a08-4f9b-87d1-16af482042ec', 'Karadoc', 'a1b2c3d4-e5f6-7a8b-9c0d-e1f2c3d4e5f6', 'LACHE', 3);
 
 INSERT INTO quetes (id, nom_quete, description, difficulte, date_assignation, date_echeance) VALUES
-('732e94c2-9e57-4fa1-96ec-3eb845dd8cdd', 'La quête du Graal', 'Trouver le Saint Graal pour le roi Arthur.', 'ABERANTE', '2025-01-01', '2025-12-31'),
-('8af9f6a1-481d-4477-ab15-18d15a5f1c37', 'Ramener du poisson frais', 'Aller pêcher du poisson frais pour le banquet du roi.', 'FACILE', '2025-02-01', '2025-11-30'),
+('732e94c2-9e57-4fa1-96ec-3eb845dd8cdd', 'La quête du Graal', 'Trouver le Saint Graal pour le roi Arthur.', 'FACILE', '2025-01-01', '2025-12-31'),
+('8af9f6a1-481d-4477-ab15-18d15a5f1c37', 'Ramener du poisson frais', 'Aller pêcher du poisson frais pour le banquet du roi.', 'ABERRANTE', '2025-02-01', '2025-11-30'),
 ('795a1eef-5e5d-4d6c-adc0-89d3785af3a9', 'Comprendre un truc', 'Aider Perceval à comprendre un truc compliqué.', 'DIFFICILE', '2025-03-01', '2025-10-31');
 
 INSERT INTO participation_quetes (id_chevalier, id_quete, role, statut_participation, commentaire_roi) VALUES
 ('a7ada09d-fd3d-47e9-a413-6885e19f2bd1', '732e94c2-9e57-4fa1-96ec-3eb845dd8cdd', 'CHEF_EXPEDITION', 'EN_COURS', 'Bonne chance, Léodogan !'),
+('a7ada09d-fd3d-47e9-a413-6885e19f2bd1', '8af9f6a1-481d-4477-ab15-18d15a5f1c37', 'ACOLYTE', 'NON_COMMENCEE', 'Perceval, tu dois pêcher du poisson frais !'),
 ('f835ae74-0e0f-4a52-916a-bf817026b0c5', '8af9f6a1-481d-4477-ab15-18d15a5f1c37', 'ACOLYTE', 'TERMINEE', 'Perceval, tu dois pêcher du poisson frais !'),
 ('9b894c16-3a08-4f9b-87d1-16af482042ec', '795a1eef-5e5d-4d6c-adc0-89d3785af3a9', 'RESERVE', 'ECHOUEE_LAMENTABLEMENT', 'Karadoc, tu as été d’une grande aide.');

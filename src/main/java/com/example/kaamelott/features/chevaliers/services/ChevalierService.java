@@ -5,16 +5,20 @@ import com.example.kaamelott.common.exceptions.http.NotFoundException;
 import com.example.kaamelott.common.utils.PaginationUtils;
 import com.example.kaamelott.features.chevaliers.dtos.in.InChevalierDto;
 import com.example.kaamelott.features.chevaliers.dtos.out.OutChevalierDto;
+import com.example.kaamelott.features.chevaliers.dtos.out.OutChevalierQueteDto;
 import com.example.kaamelott.features.chevaliers.entities.ChevalierEntity;
 import com.example.kaamelott.features.chevaliers.entities.ChevalierTitreEntity;
 import com.example.kaamelott.features.chevaliers.enumerations.CaracteristiquePrincipale;
 import com.example.kaamelott.features.chevaliers.repositories.ChevalierRepository;
 import com.example.kaamelott.features.chevaliers.repositories.ChevalierTitreRepository;
+import com.example.kaamelott.features.quetes.entities.QueteEntity;
+import com.example.kaamelott.features.quetes.enumerations.StatutParticipationQuete;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +26,12 @@ public class ChevalierService implements IChevalierService {
 
     private final ChevalierRepository chevalierRepository;
     private final ChevalierTitreRepository chevalierTitreRepository;
+
+    @Override
+    public ChevalierEntity getChevalierById(UUID chevalierId) {
+        return chevalierRepository.findById(chevalierId)
+                .orElseThrow(() -> new NotFoundException("Chevalier non trouvé avec l'ID : " + chevalierId));
+    }
 
     @Override
     public OutPaginatedDataDto<List<OutChevalierDto>> getAll(Integer cursor, Integer pageSize) {
@@ -40,6 +50,19 @@ public class ChevalierService implements IChevalierService {
         // New variable to get the ID after saving
         ChevalierEntity savedChevalier = chevalierRepository.save(chevalierEntity);
         return toDto(savedChevalier);
+    }
+
+    @Override
+    public OutPaginatedDataDto<List<OutChevalierQueteDto>> getQuetesEnCours(UUID chevalierId, Integer cursor, Integer pageSize) {
+        return PaginationUtils.paginate(
+                cursor,
+                pageSize,
+                (pageable) -> chevalierRepository.findQuetesEnCoursByChevalierId(chevalierId, pageable),
+                (queteEntity) -> toChevalierQueteDto(
+                        queteEntity,
+                        StatutParticipationQuete.EN_COURS
+                )
+        );
     }
 
     @Override
@@ -74,6 +97,15 @@ public class ChevalierService implements IChevalierService {
                 entity.getTitre().getTitre(),
                 entity.getCaracteristiquePrincipale().getLabel(),
                 entity.getNiveauBravoure()
+        );
+    }
+
+    private OutChevalierQueteDto toChevalierQueteDto(QueteEntity queteEntity, StatutParticipationQuete statut) {
+        return new OutChevalierQueteDto(
+                queteEntity.getId(),
+                queteEntity.getNom_quete(),
+                statut.getLabel()
+
         );
     }
 }

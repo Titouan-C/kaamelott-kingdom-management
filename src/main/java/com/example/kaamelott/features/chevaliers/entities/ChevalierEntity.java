@@ -1,6 +1,7 @@
 package com.example.kaamelott.features.chevaliers.entities;
 
 import com.example.kaamelott.features.chevaliers.enumerations.CaracteristiquePrincipale;
+import com.example.kaamelott.features.quetes.entities.ParticipationQueteEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -41,6 +43,14 @@ public class ChevalierEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "participation_quetes",
+            joinColumns = @JoinColumn(name = "id_chevalier"),
+            inverseJoinColumns = @JoinColumn(name = "id_quete")
+    )
+    private Set<ParticipationQueteEntity> participationQueteEntities;
 
     public ChevalierEntity(String nom, ChevalierTitreEntity titre, CaracteristiquePrincipale caracteristiquePrincipale, Integer niveauBravoure) {
         this.nom = nom;
