@@ -13,6 +13,7 @@ import com.example.kaamelott.features.chevaliers.repositories.ChevalierRepositor
 import com.example.kaamelott.features.chevaliers.repositories.ChevalierTitreRepository;
 import com.example.kaamelott.features.quetes.entities.QueteEntity;
 import com.example.kaamelott.features.quetes.enumerations.StatutParticipationQuete;
+import com.example.kaamelott.features.quetes.repositories.ParticipationQueteRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class ChevalierService implements IChevalierService {
 
     private final ChevalierRepository chevalierRepository;
     private final ChevalierTitreRepository chevalierTitreRepository;
+    private final ParticipationQueteRepository participationQueteRepository;
 
     @Override
     public ChevalierEntity getChevalierById(UUID chevalierId) {
@@ -70,6 +72,16 @@ public class ChevalierService implements IChevalierService {
     }
 
     @Override
+    @Transactional
+    public void retirerQuete(UUID chevalierId, UUID queteId) {
+        if(!participationQueteRepository.existsByChevalierIdAndQueteId(chevalierId, queteId)) {
+            throw new NotFoundException("Participation non trouvée pour le Chevalier avec l'ID : " + chevalierId + " et la Quête avec l'ID : " + queteId);
+        }
+
+        participationQueteRepository.deleteByChevalierIdAndQueteId(chevalierId, queteId);
+    }
+
+    @Override
     public List<String> getAllTitres() {
         return chevalierTitreRepository.findAll()
                 .stream()
@@ -80,6 +92,11 @@ public class ChevalierService implements IChevalierService {
     @Override
     public boolean isTitreExists(String titre) {
         return chevalierTitreRepository.existsByTitre(titre);
+    }
+
+    @Override
+    public boolean isChevalierExists(UUID chevalierId) {
+            return chevalierRepository.existsByIdNotDeleted(chevalierId);
     }
 
     private ChevalierEntity toEntity(InChevalierDto inChevalierDto) {
@@ -111,9 +128,5 @@ public class ChevalierService implements IChevalierService {
                 statut.getLabel()
 
         );
-    }
-
-    private boolean isChevalierExists(UUID chevalierId) {
-        return chevalierRepository.existsByIdNotDeleted(chevalierId);
     }
 }

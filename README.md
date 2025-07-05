@@ -333,6 +333,22 @@ GET /quetes/difficulte-aberrante?page=0&limit=10
 
 Retire un chevalier d'une quête.
 
+#### Choix technique :
+- La route fait partie des requêtes `/chevaliers`, ce que dit la consigne. Cependant, de mon point de vue, cette requête
+devrait faire partie des requêtes `/quetes` car elle concerne la participation d'un chevalier à une quête. Ainsi qu'en
+développant cette fonctionnalité, j'ai remarqué que j'avais implémenté la communication avec la bdd dans le service
+`QueteService` et non dans le `ChevalierService` (pour l'endpoint [`/quetes/{idQuete}/assigner-chevalier`](
+#4-post-quetesidqueteassigner-chevalier)). Donc, j'ai décidé de laisser la requête dans les requêtes
+`/chevaliers` pour respecter la consigne, mais je pense que cette requête devrait être dans les requêtes `/quetes` ou
+l'autre endpoint [`/quetes/{idQuete}/assigner-chevalier`](#4-post-quetesidqueteassigner-chevalier) devrait être dans les 
+requêtes `/chevaliers`.
+- J'ai décidé de ne pas implémenter la soft delete pour les participations, car cela n'a pas de sens de garder une
+participation qui a été retirée. Une participation retirée n'est plus pertinente et ne doit pas être conservée dans la
+base de données. Donc, pour le moment, j'ai implémenté une suppression physique de la participation. Si besoin, dans le
+futur, on pourrait implémenter une soft delete pour les participations, mais cela alourdirait la base de données car
+il peut y avoir beaucoup de participations pour une quête (peut-être implémenter une limite de participations par quête
+pour éviter ce problème et implémenter la soft deletion pour les participants).
+
 #### Requête
 ```http
 GET /chevaliers/{idChevalier}/retirer-quete/{idQuete}

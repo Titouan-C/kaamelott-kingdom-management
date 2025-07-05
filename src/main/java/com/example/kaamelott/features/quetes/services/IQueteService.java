@@ -14,6 +14,8 @@ import java.util.UUID;
  */
 public interface IQueteService {
 
+    boolean isQueteExists(UUID queteId);
+
     QueteEntity getQueteById(UUID queteId);
 
     OutPaginatedDataDto<List<OutParticipantDto>> getParticipants(

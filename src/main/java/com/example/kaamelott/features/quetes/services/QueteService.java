@@ -29,6 +29,11 @@ public class QueteService implements IQueteService{
     private final ChevalierService chevalierService;
 
     @Override
+    public boolean isQueteExists(UUID queteId) {
+        return queteRepository.existsByIdNotDeleted(queteId);
+    }
+
+    @Override
     public QueteEntity getQueteById(UUID queteId) {
         return queteRepository.findByIdAndNotDeleted(queteId)
                 .orElseThrow(() -> new NotFoundException("Quête non trouvée ou supprimée avec l'ID : " + queteId));
@@ -96,9 +101,5 @@ public class QueteService implements IQueteService{
                 queteEntity.getDateAssignation(),
                 queteEntity.getDateEcheance()
         );
-    }
-
-    private boolean isQueteExists(UUID queteId) {
-        return queteRepository.existsByIdNotDeleted(queteId);
     }
 }

@@ -22,9 +22,13 @@ public interface IChevalierService {
 
     OutPaginatedDataDto<List<OutChevalierQueteDto>> getQuetesEnCours(UUID chevalierId, Integer cursor, Integer pageSize);
 
+    void retirerQuete(UUID chevalierId, UUID queteId);
+
     // UTILS
 
     List<String> getAllTitres();
 
     boolean isTitreExists(String titre);
+
+    boolean isChevalierExists(UUID chevalierId);
 }

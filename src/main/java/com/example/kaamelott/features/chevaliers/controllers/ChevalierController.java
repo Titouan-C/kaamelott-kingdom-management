@@ -3,12 +3,14 @@ package com.example.kaamelott.features.chevaliers.controllers;
 import com.example.kaamelott.common.dtos.OutPaginatedDataDto;
 import com.example.kaamelott.common.dtos.OutResponseDto;
 import com.example.kaamelott.common.exceptions.http.BadRequestException;
+import com.example.kaamelott.common.exceptions.http.NotFoundException;
 import com.example.kaamelott.common.utils.PaginationUtils;
 import com.example.kaamelott.common.utils.ValidationUtils;
 import com.example.kaamelott.features.chevaliers.dtos.in.InChevalierDto;
 import com.example.kaamelott.features.chevaliers.dtos.out.OutChevalierDto;
 import com.example.kaamelott.features.chevaliers.dtos.out.OutChevalierQueteDto;
 import com.example.kaamelott.features.chevaliers.services.IChevalierService;
+import com.example.kaamelott.features.quetes.services.IQueteService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import java.util.UUID;
 public class ChevalierController {
 
     private final IChevalierService chevalierService;
+    private final IQueteService queteService;
 
     /**
      * Retrieves a paginated list of Chevaliers.
@@ -107,6 +110,30 @@ public class ChevalierController {
                 quetesEnCours,
                 true,
                 "Quêtes en cours récupérées avec succès"
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("{idChevalier}/retirer-quete/{idQuete}")
+    public ResponseEntity<OutResponseDto<Void>> retirerQuete(
+            @PathVariable String idChevalier,
+            @PathVariable String idQuete
+    ) {
+        UUID chevalierId = ValidationUtils.validateAndParseUUID(idChevalier, "idChevalier");
+        UUID queteId = ValidationUtils.validateAndParseUUID(idQuete, "idQuete");
+
+        if (!chevalierService.isChevalierExists(chevalierId)) {
+            throw new NotFoundException("Chevalier non trouvé ou supprimé avec l'ID : " + chevalierId);
+        }
+        if(!queteService.isQueteExists(queteId)) {
+            throw new NotFoundException("Quête non trouvée ou supprimée avec l'ID : " + queteId);
+        }
+
+        chevalierService.retirerQuete(chevalierId, queteId);
+        OutResponseDto<Void> response = new OutResponseDto<>(
+                null,
+                true,
+                "Chevalier retiré de la quête avec succès"
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
