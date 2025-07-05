@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -42,4 +41,11 @@ public class ChevalierEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public ChevalierEntity(String nom, ChevalierTitreEntity titre, CaracteristiquePrincipale caracteristiquePrincipale, Integer niveauBravoure) {
+        this.nom = nom;
+        this.titre = titre;
+        this.caracteristiquePrincipale = caracteristiquePrincipale;
+        this.niveauBravoure = niveauBravoure;
+    }
 }

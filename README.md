@@ -29,17 +29,21 @@ psql -U postgres -c "CREATE DATABASE kaamelott_kingdom_management;"
 psql -U postgres -d kaamelott_kingdom_management -f src/main/resources/db/init_db.sql
 ```
 
-5. Charger les modifications Gradle via l'IDE (l'éléphant de l'IDE quand vous ouvrez le projet) ou en ligne de commande :
+5. Changer le mot de passe de la base de donnée PostgreSQL dans le fichier `.env`.
+
+6. Charger les modifications Gradle via l'IDE (l'éléphant de l'IDE quand vous ouvrez le projet) ou en ligne de commande :
 ```bash
 ./gradlew build
 ```
 ![img.png](src/main/resources/static/images/img.png)
 
-6. Lancer l'application via l'IDE ou en ligne de commande :
+7. Lancer l'application via l'IDE ou en ligne de commande :
 ```bash
 ./gradlew bootRun
 ```
 ![img_1.png](src/main/resources/static/images/img_1.png)
+
+8. Acccéder aux requêtes via l'URL [http://localhost:3001/swagger-ui.html](http://localhost:3001/swagger-ui.html)
 
 
 ## Choix techniques du projet
@@ -173,7 +177,7 @@ POST /chevaliers
 ```json
 {
   "nom": "Nom du chevalier",
-  "id_titre": "UUID du titre",
+  "titre": "Nom du titre",
   "caracteristique_principale": "GOURMAND",
   "niveau_bravoure": 5
 }

@@ -22,7 +22,11 @@ public enum CaracteristiquePrincipale {
                 return caracteristique;
             }
         }
-        throw new IllegalArgumentException("No CaracteristiquePrincipale found for label: " + label);
+        throw new IllegalArgumentException(String.format(
+                "Caractéristique principale '%s' n'est pas valide. Valeurs possibles : %s",
+                label,
+                String.join(", ", java.util.Arrays.stream(values()).map(CaracteristiquePrincipale::getLabel).toArray(String[]::new))
+        ));
     }
 
 }
