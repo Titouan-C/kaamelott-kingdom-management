@@ -104,6 +104,9 @@ qui peuvent être modifiés dans le temps).
 **Pourquoi ce choix ?**
 - On ne supprime jamais vraiment une donnée pour garder l'historique, mais on la marque comme inactive (grâce à un champ
 `deleted_at` nullable).
+- Cela implique de filtrer les données supprimées dans les requêtes pour ne pas les afficher. Ainsi, j'ai créé un
+repository générique `BaseRepository` qui étend `JpaRepository` et ajoute les méthodes pour gérer la suppression
+soft (on ne récupère pas les entités supprimées).
 **Alternative** : Suppression physique, mais cela rendrait impossible la récupération des données supprimées.
 
 ### 10. Pagination

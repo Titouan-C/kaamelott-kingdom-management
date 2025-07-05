@@ -29,8 +29,8 @@ public class ChevalierService implements IChevalierService {
 
     @Override
     public ChevalierEntity getChevalierById(UUID chevalierId) {
-        return chevalierRepository.findById(chevalierId)
-                .orElseThrow(() -> new NotFoundException("Chevalier non trouvé avec l'ID : " + chevalierId));
+        return chevalierRepository.findByIdAndNotDeleted(chevalierId)
+                .orElseThrow(() -> new NotFoundException("Chevalier non trouvé ou supprimé avec l'ID : " + chevalierId));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ChevalierService implements IChevalierService {
         return PaginationUtils.paginate(
                 cursor,
                 pageSize,
-                chevalierRepository::findAll,
+                chevalierRepository::findAllNotDeleted,
                 this::toDto
         );
     }
@@ -54,6 +54,10 @@ public class ChevalierService implements IChevalierService {
 
     @Override
     public OutPaginatedDataDto<List<OutChevalierQueteDto>> getQuetesEnCours(UUID chevalierId, Integer cursor, Integer pageSize) {
+        if(!isChevalierExists(chevalierId)) {
+            throw new NotFoundException("Chevalier non trouvé ou supprimé avec l'ID : " + chevalierId);
+        }
+
         return PaginationUtils.paginate(
                 cursor,
                 pageSize,
@@ -107,5 +111,9 @@ public class ChevalierService implements IChevalierService {
                 statut.getLabel()
 
         );
+    }
+
+    private boolean isChevalierExists(UUID chevalierId) {
+        return chevalierRepository.existsByIdNotDeleted(chevalierId);
     }
 }

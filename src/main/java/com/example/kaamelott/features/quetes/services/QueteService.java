@@ -30,12 +30,16 @@ public class QueteService implements IQueteService{
 
     @Override
     public QueteEntity getQueteById(UUID queteId) {
-        return queteRepository.findById(queteId)
-                .orElseThrow(() -> new NotFoundException("Quête non trouvée avec l'ID : " + queteId));
+        return queteRepository.findByIdAndNotDeleted(queteId)
+                .orElseThrow(() -> new NotFoundException("Quête non trouvée ou supprimée avec l'ID : " + queteId));
     }
 
     @Override
     public OutPaginatedDataDto<List<OutParticipantDto>> getParticipants(UUID queteId, Integer cursor, Integer pageSize) {
+        if (!isQueteExists(queteId)) {
+            throw new NotFoundException("Quête non trouvée ou supprimée avec l'ID : " + queteId);
+        }
+
         return PaginationUtils.paginate(
                 cursor,
                 pageSize,
@@ -92,5 +96,9 @@ public class QueteService implements IQueteService{
                 queteEntity.getDateAssignation(),
                 queteEntity.getDateEcheance()
         );
+    }
+
+    private boolean isQueteExists(UUID queteId) {
+        return queteRepository.existsByIdNotDeleted(queteId);
     }
 }
